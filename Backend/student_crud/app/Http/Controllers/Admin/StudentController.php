@@ -9,40 +9,54 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+    public function index()
+    {
+        $students = Student::get();
+        
+        return response()->json([
+            "msg" => "students fetched",
+            "data" => $students
+        ]);
+    }
+
     public function create(Request $request)
     {
 
-        $student = Student::create([
-            "name" => $request->student["name"],
-            "class" => $request->student["class"],
-            "age" => $request->student["age"],
-            "phone" => $request->student["phone"],
-            "address" => $request->student["address"],
+        $validator = Validator::make($request->all(),[
+            "name" => 'required',
+            "classes" => 'required',
+            "age" => 'required',
+            "phone" => 'required',
+            "address" => 'required',
         ]);
 
-        // $student = Student::create([
-        //     "name" => $request->name,
-        //     "class" => $request->class,
-        //     "age" => $request->age,
-        //     "phone" => $request->phone,
-        //     "address" => $request->address,
-        // ]);
+        if($validator->fails()){
+            return response()->json($validator->errors(),400);
+        }
+
+        $student = Student::create([
+            "name" => $request->name,
+            "class" => $request->classes,
+            "age" => $request->age,
+            "phone" => $request->phone,
+            "address" => $request->address,
+        ]);
 
          //for many to many
-         $student->teachers()->attach($request->teachers);
+        //  $student->teachers()->attach($request->teachers);
 
-         foreach($request->courses as $course){
-            $course = Course::create([
-                "name" => $request->student["name"],
-                "teacher_id" => 
-                "student_id" => 
-            ]);
-         }
+        //  foreach($request->courses as $course){
+        //     $course = Course::create([
+        //         "name" => $request->student["name"],
+        //         "teacher_id" => 
+        //         "student_id" => 
+        //     ]);
+        //  }
 
 
         return response()->json([
             "msg" => "student created successfully",
-            "data" => $request->teachers
+            "data" => $request->name
         ]);
     }
 }

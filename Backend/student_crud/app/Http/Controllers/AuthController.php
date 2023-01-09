@@ -15,7 +15,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(),[
             "name" => 'required',
             "email" => 'required|unique:users',
-            "password" => 'required|string|confirmed',
+            "password" => 'required|string',
         ]);
 
         if($validator->fails()){
@@ -27,9 +27,12 @@ class AuthController extends Controller
             "email" => $request->email,
             "password"=> Hash::make($request->password),
         ]);
-        return response()->json([
-            "msg" => "user created successfully"
-        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if ($token = auth()->attempt($credentials)) {
+            return $this->respondWithToken($token);
+        }
     }
 
     public function login(Request $request)
@@ -40,11 +43,19 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(),400);
+            // return response()->json($validator->errors(),400);
+            return response()->json([
+                "success" => false,
+                "msg" => $validator->errors()
+            ], 400);
         }
 
         if(!$token = auth()->attempt($validator->validated())){
-            return response()->json(["error"=>"unauthorized"]);
+            // return response()->json(["error"=>"unauthorized"]);
+            return response()->json([
+                "success" => false,
+                "msg" => "unauthorized"
+            ], 400);
         }
 
         return $this->respondWithToken($token);

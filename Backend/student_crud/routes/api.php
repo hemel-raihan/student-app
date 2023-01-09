@@ -30,6 +30,7 @@ Route::group(['middleware' => 'api'], function ($routes) {
     Route::get('dashboard', [AuthController::class, 'dashboard']);
 
     Route::post('student/create', [StudentController::class, 'create']);
+    Route::get('student/list', [StudentController::class, 'index']);
 
     Route::post('teacher/create', [TeacherController::class, 'create']);
     Route::get('teacher/list', [TeacherController::class, 'index']);
