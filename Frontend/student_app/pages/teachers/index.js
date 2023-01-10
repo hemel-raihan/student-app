@@ -9,7 +9,7 @@ export default function List()
     const router = useRouter();
     const [auth, setAuth] = useState(false);
     const {http,getToken} = AuthUser();
-    const [students,setStudents] = useState();
+    const [teachers,setTeachers] = useState();
 
         
     useEffect(() =>{
@@ -22,9 +22,9 @@ export default function List()
 
 
     const fetchUserDetail = () =>{
-        http.get('/student/list').then((res)=>{
+        http.get('/teacher/list').then((res)=>{
             console.log(res)
-            setStudents(res.data.data);
+            setTeachers(res.data.data);
             setAuth(true);
         })
     }
@@ -32,61 +32,40 @@ export default function List()
     return(
         <Layout auth={auth}>
           <>
-          <Link href="/students/create"><button type="button" style={{float: "right"}} className="btn btn-primary">Add Student</button></Link>
+          <Link href="/teachers/create"><button type="button" style={{float: "right"}} className="btn btn-primary">Add Teacher</button></Link>
             <table className="table">
                 <thead>
                     <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Teachers</th>
-                    <th scope="col">Class</th>
-                    <th scope="col">Age</th>
+                    <th scope="col">Students</th>
+                    <th scope="col">Department</th>
                     <th scope="col">Phone</th>
-                    <th scope="col">Address</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    {students?.map((row,i)=>(
+                    {teachers?.map((row,i)=>(
                     <tr key={i}>
                         <th scope="row">{i+1}</th>
                         <td>{row.name}</td>
-                        <td>{row.teachers_count}</td>
-                        <td>{row.class}</td>
-                        <td>{row.age}</td>
+                        <td>{row.students_count}</td>
+                        <td>{row.department}</td>
                         <td>{row.phone}</td>
-                        <td>{row.address}</td>
+                        <td>{row.email}</td>
                         <td>
-                        <Link href={`/students/details/${row.id}`}>
+                        <Link href={`/teachers/details/${row.id}`}>
                             <a className="btn btn-primary">
                                 Details
                             </a>
                         </Link>|
-                        <Link href={`/students/edit/${row.id}`}>
+                        <Link href={`/teachers/edit/${row.id}`}>
                             <a className="btn btn-danger">
                                 Edit
                             </a>
                         </Link>
-                        {/* <ul className="action">
-                                <li>
-                                  <Link
-                                    href={`/students/details/${row.id}`}
-                                  >
-                                    <a>
-                                      Details
-                                    </a>
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link href={`/students/edit/${row.id}`}
-                                  >
-                                    <a>
-                                      Edit
-                                    </a>
-                                  </Link>
-                                </li>
-                            </ul> */}
                         </td>
                     </tr>
                     ))}

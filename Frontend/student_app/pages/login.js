@@ -4,9 +4,14 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
 import AuthUser from "./AuthUser";
+import toast from "../components/Toast/index";
 
 const Login = () => {
 
+  const notify = React.useCallback((type, message) => {
+    toast({ type, message });
+  }, []);
+  
     const {http, setToken, getToken} = AuthUser();
 
     const router = useRouter();
@@ -30,8 +35,11 @@ const Login = () => {
             setToken(res.data.user,res.data.access_token);
         })
         .catch((e)=>{
-          console.log(e)
-          // const msg = e.response;
+          const msg = e.response;
+          console.log(msg)
+          if(msg?.data.msg){
+              notify("error", `${msg?.data.msg}`);
+          }
         });
       }
     // }   

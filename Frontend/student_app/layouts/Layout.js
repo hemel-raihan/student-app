@@ -35,8 +35,7 @@ function Layout( props ) {
     menu = (
             <div className="navbar-nav">
               <Link href="/students"><a className="nav-item nav-link active" >Students</a></Link>
-              <Link href="/login"><a className="nav-item nav-link" >Login</a></Link>
-              <Link href="/register"><a className="nav-item nav-link" >Registration</a></Link>
+              <Link href="/teachers"><a className="nav-item nav-link active" >Teachers</a></Link>
               <a className="nav-item nav-link" onClick={logoutUser} href="#">Logout</a>
             </div>
     )

@@ -10,6 +10,11 @@ class Student extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
     public function teachers()
     {
         return $this->belongsToMany(Teacher::class, "student_teachers");

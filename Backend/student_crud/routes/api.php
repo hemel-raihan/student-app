@@ -31,7 +31,11 @@ Route::group(['middleware' => 'api'], function ($routes) {
 
     Route::post('student/create', [StudentController::class, 'create']);
     Route::get('student/list', [StudentController::class, 'index']);
+    Route::post('student/details', [StudentController::class, 'show']);
+    Route::post('student/update', [StudentController::class, 'update']);
 
     Route::post('teacher/create', [TeacherController::class, 'create']);
     Route::get('teacher/list', [TeacherController::class, 'index']);
+    Route::post('teacher/details', [TeacherController::class, 'show']);
+    Route::post('teacher/update', [TeacherController::class, 'update']);
 });
